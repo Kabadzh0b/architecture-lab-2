@@ -6,18 +6,21 @@ import (
 	"strings"
 )
 
-// TODO: document this function.
-// PrefixCalculate converts
-
+// isOperand checks if the given string is a valid operand.
+// It returns true if the string can be converted to an integer, false otherwise.
 func isOperand(s string) bool {
     _, err := strconv.Atoi(s)
     return err == nil
 }
 
+// isOperator checks if the given string is a valid operator.
+// It returns true if the string is one of the following: "+", "-", "*", "/", false otherwise.
 func isOperator(s string) bool {
     return s == "+" || s == "-" || s == "*" || s == "/"
 }
 
+// calculate performs the given operation on the two operands.
+// It returns the result of the operation as a string and an error if the operation is invalid.
 func calculate(operator, operand1, operand2 string) (string, error) {
     num1, err := strconv.Atoi(operand1)
     if err != nil {
@@ -49,6 +52,8 @@ func calculate(operator, operand1, operand2 string) (string, error) {
     return strconv.Itoa(result), nil
 }
 
+// PrefixCalculate computes the result of the given prefix notation expression.
+// It returns the result as a string and an error if the expression is invalid.
 func PrefixCalculate(input string) (string, error) {
 	parts := strings.Fields(input)
 	stack := []string{}
