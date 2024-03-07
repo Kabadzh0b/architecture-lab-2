@@ -1,23 +1,28 @@
 package lab2
 
 import (
-	"fmt"
+	. "gopkg.in/check.v1"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
-func TestPrefixCalculate(t *testing.T) {
+// Hook up gocheck into the "go test" runner.
+func Test(t *testing.T) { TestingT(t) }
+
+type MySuite struct{}
+
+var _ = Suite(&MySuite{})
+
+func (s *MySuite) TestPrefixCalculate(c *C) {
+	// Test a case where the prefix notation is valid.
 	res, err := PrefixCalculate("+ 5 * - 4 2 3")
-	if assert.Nil(t, err) {
-		assert.Equal(t, "4 2 - 3 * 5 +", res)
-	}
-}
+	c.Assert(err, IsNil)
+	c.Assert(res, Equals, "11") // The expected result of "+ 5 * - 4 2 3" is "-1".
 
-func ExamplePrefixCalculate() {
-	res, _ := PrefixCalculate("+ 2 2")
-	fmt.Println(res)
+	// Test a case where the prefix notation is invalid.
+	res, err = PrefixCalculate("+ 5 * - 4 3")
+	c.Assert(err, NotNil) // An error should be returned because the prefix notation is invalid.
 
-	// Output:
-	// 4
+	// Test a case where the prefix notation results in division by zero.
+	res, err = PrefixCalculate("/ 5 0")
+	c.Assert(err, NotNil) // An error should be returned because division by zero is not allowed.
 }
