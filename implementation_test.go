@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// Test CI
 // Hook up gocheck into the "go test" runner.
 func Test(t *testing.T) { TestingT(t) }
 
