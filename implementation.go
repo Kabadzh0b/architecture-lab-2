@@ -22,17 +22,17 @@ func isOperator(s string) bool {
 // calculate performs the given operation on the two operands.
 // It returns the result of the operation as a string and an error if the operation is invalid.
 func calculate(operator, operand1, operand2 string) (string, error) {
-    num1, err := strconv.Atoi(operand1)
+    num1, err := strconv.ParseFloat(operand1, 64)
     if err != nil {
         return "", fmt.Errorf("invalid operand: %s", operand1)
     }
 
-    num2, err := strconv.Atoi(operand2)
+    num2, err := strconv.ParseFloat(operand2, 64)
     if err != nil {
         return "", fmt.Errorf("invalid operand: %s", operand2)
     }
 
-    var result int
+    var result float64
     switch operator {
     case "+":
         result = num1 + num2
@@ -49,7 +49,14 @@ func calculate(operator, operand1, operand2 string) (string, error) {
         return "", fmt.Errorf("invalid operator: %s", operator)
     }
 
-    return strconv.Itoa(result), nil
+    // Check if the result is an integer
+    if result == float64(int(result)) {
+        // If it is, format it without decimal places
+        return fmt.Sprintf("%.0f", result), nil
+    }
+
+    // Otherwise, format it with six digits after the decimal point
+    return fmt.Sprintf("%.6f", result), nil
 }
 
 // PrefixCalculate computes the result of the given prefix notation expression.
