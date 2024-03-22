@@ -51,7 +51,7 @@ func (s *ComputeSuite) TestCompute(c *C) {
 			c.Assert(err.Error(), Equals, tc.errMsg)
 			c.Assert(result, Equals, tc.expected)
 		} else {
-			c.Assert(err, IsNil)
+			c.Assert(err, NotNil)
 			c.Assert(result, Equals, tc.expected)
 		}
 	}
