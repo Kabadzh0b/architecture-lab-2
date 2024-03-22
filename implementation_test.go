@@ -3,6 +3,7 @@ package lab2
 import (
 	. "gopkg.in/check.v1"
 	"testing"
+	"fmt"
 )
 
 // Test CI
@@ -39,6 +40,10 @@ func (s *MySuite) TestCalculate(c *C) {
 	case4, err := calculate("/", "5", "5")
 	c.Assert(err, IsNil)
 	c.Assert(case4, Equals, "1")
+	case5, err := calculate("^", "5", "5")
+	c.Assert(err, IsNil)
+	c.Assert(case5, Equals, "3125")
+	
 
 	_, err = calculate("/", "1", "0")
 	c.Assert(err, NotNil)
@@ -65,6 +70,9 @@ func (s *MySuite) TestPrefixCalculate(c *C) {
 	simpleCase5, err := PrefixCalculate("+ 100 - 2 9")
 	c.Assert(err, IsNil)
 	c.Assert(simpleCase5, Equals, "93")
+	simpleCase6, err := PrefixCalculate("* 100 ^ 2 9")
+	c.Assert(err, IsNil)
+	c.Assert(simpleCase6, Equals, "51200")
 
 	//Complex cases with 7-10 operands
 	complexCase1, err := PrefixCalculate("+ 100 * - 2 9 + / 8 8 9")
@@ -75,7 +83,10 @@ func (s *MySuite) TestPrefixCalculate(c *C) {
 	c.Assert(complexCase2, Equals, "133")
 	complexCase3, err := PrefixCalculate("+ * + + / / - - * 10 55 2 -9 2 3 99 -500 1 11")
 	c.Assert(err, IsNil)
-	c.Assert(complexCase3, Equals, "-297.166667")
+	c.Assert(complexCase3, Equals, "-298")
+	complexCase4, err := PrefixCalculate("^ * + + / / - - * 10 55 2 -9 2 3 99 -500 1 2")
+	c.Assert(err, IsNil)
+	c.Assert(complexCase4, Equals, "95481")
 
 
 	//Error cases
@@ -87,4 +98,15 @@ func (s *MySuite) TestPrefixCalculate(c *C) {
 	c.Assert(err, NotNil)
 	_, err = PrefixCalculate("+ / 1 1 88e")
 	c.Assert(err, NotNil)
+}
+
+func (s *MySuite) Example(c *C)() {
+	anotation := "+ 3 * 3 4"
+	result, err := PrefixCalculate(anotation)
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
+	fmt.Println("Result: ", result)
+	//Output:
+	//Result: 15
 }

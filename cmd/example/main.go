@@ -23,6 +23,6 @@ func main() {
 	//       }
 	//       err := handler.Compute()
 
-	res, _ := lab2.PrefixCalculate("+ 2 3 4")
+	res, _ := lab2.PrefixCalculate("+ * + + / / - - * 10 55 2 -9 2 3 99 -500 1 11")
 	fmt.Println(res)
 }
